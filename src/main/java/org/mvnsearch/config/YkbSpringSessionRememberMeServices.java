@@ -5,18 +5,18 @@
 
 package org.mvnsearch.config;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.RememberMeAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 import org.springframework.util.Assert;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class YkbSpringSessionRememberMeServices implements RememberMeServices, LogoutHandler {
     public static final String REMEMBER_ME_LOGIN_ATTR = SpringSessionRememberMeServices.class.getName() + "REMEMBER_ME_LOGIN_ATTR";
@@ -32,7 +32,7 @@ public class YkbSpringSessionRememberMeServices implements RememberMeServices, L
     }
 
     public final Authentication autoLogin(HttpServletRequest request, HttpServletResponse response) {
-        return (RememberMeAuthenticationToken) request.getSession().getAttribute("successfulAuthentication");
+        return (RememberMeAuthenticationToken) request.getSession().getAttribute("spring:session");
     }
 
     public final void loginFail(HttpServletRequest request, HttpServletResponse response) {
@@ -45,7 +45,7 @@ public class YkbSpringSessionRememberMeServices implements RememberMeServices, L
         } else {
             request.setAttribute(REMEMBER_ME_LOGIN_ATTR, true);
             request.getSession().setMaxInactiveInterval(this.validitySeconds);
-            request.getSession().setAttribute("successfulAuthentication",successfulAuthentication);
+            request.getSession().setAttribute("spring:session",successfulAuthentication);
         }
     }
 
